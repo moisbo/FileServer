@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta name="Author" content="moisbo.com"/>
+    <title>File List</title>
+</head>
+<body>
+<p>Files</p>
+ <ul>
+	{%if items%}		
+		{%for item in items%}
+		<li><p><a href="files/{{item}}">{{item}}</a></p></li>
+		{%end%}
+	{%else%}
+	<li>
+		<p>No Files</p>
+	</li>
+	{%end%}
+</ul>
+</body>
+</html>
