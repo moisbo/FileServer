@@ -13,6 +13,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/", IndexHandler),
             (r"/files/(.*)", DownloadHandler),
+            (r"/settings/(.*)", SettingsHandler),
         ]
         settings = {
             "debug":False,
@@ -25,15 +26,10 @@ class IndexHandler(tornado.web.RequestHandler):
         items = []
         for filename in os.listdir(os.path.join(APP_PATH, "files")):
             items.append(filename)
-        self.render('index.html', items=items)
-    def post(self):
-        file_content = self.request.files['datafile'][0]['body']
-        file_name = self.request.files['datafile'][0]['filename']
-        file = urllib.unquote(file_name)
-        x = open(os.path.join(os.path.join(APP_PATH, "files"), file), 'w')
-        x.write(file_content)
-        x.close()
-        self.redirect("/")
+        settings = []
+        for filename in os.listdir(os.path.join(APP_PATH, "settings")):
+            settings.append(filename)
+        self.render('index.html', items=items, settings=settings)
 
 class DownloadHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
@@ -41,6 +37,15 @@ class DownloadHandler(tornado.web.RequestHandler):
         file = urllib.unquote(file_name)
         print file
         x = open(os.path.join(os.path.join(APP_PATH, "files"), file))
+        self.set_header('Content-Disposition', 'attachment; filename=\"' + file+'\"')
+        self.finish(x.read())
+
+class SettingsHandler(tornado.web.RequestHandler):
+    @tornado.web.asynchronous
+    def get(self, file_name):
+        file = urllib.unquote(file_name)
+        print file
+        x = open(os.path.join(os.path.join(APP_PATH, "settings"), file))
         self.set_header('Content-Disposition', 'attachment; filename=\"' + file+'\"')
         self.finish(x.read())
 

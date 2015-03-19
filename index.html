@@ -5,6 +5,18 @@
     <title>File List</title>
 </head>
 <body>
+<p>Settings</p>
+ <ul>
+	{%if settings%}		
+		{%for item in settings%}
+		<li><p><a href="settings/{{item}}">{{item}}</a></p></li>
+		{%end%}
+	{%else%}
+	<li>
+		<p>No Settings</p>
+	</li>
+	{%end%}
+</ul>
 <p>Files</p>
  <ul>
 	{%if items%}		
