@@ -17,6 +17,7 @@ class Application(tornado.web.Application):
         ]
         settings = {
             "debug":False,
+            "static_path": os.path.join(APP_PATH, "static")
         }
         tornado.web.Application.__init__(self, handlers, **settings)
 
